@@ -1,0 +1,57 @@
+version: "2.2"
+services:
+    mysql:
+      image: mariadb:10.1
+      command:
+        - --disable-log-bin
+        - --character-set-server=utf8mb4
+        - --collation-server=utf8mb4_unicode_ci
+        - --innodb-file-format=Barracuda
+        - --innodb-file-per-table=On
+      environment:
+        MYSQL_USER: "theUserYouWantToUseForMysql"
+        MYSQL_PASSWORD: "thePasswordYouWantToUseForMysql"
+        MYSQL_DATABASE: "theDatabaseNameYouWantToUseForMysql"
+        MYSQL_ROOT_PASSWORD: "thePasswordThatShouldBeUsedForMysqlRoot"
+      volumes:
+        - mysql:/var/lib/mysql
+      ports:
+        # Expose the mysql port to the host system on port 13306
+        # So you can connect to the mysql server via localhost:13306
+        - "13306:3306"
+    apache:
+      image: saschaegerer/apache:2-php-fpm
+      environment:
+        APACHE_CONF_FCGI_HOST: php
+        APACHE_CONF_FCGI_PORT: 9000
+      volumes_from:
+        - php
+      ports:
+        # Expose the apache port 80 to the host system on port 8080
+        # So you can access http://localhost:8080
+        - "8080:80"
+    php:
+      image: saschaegerer/php-fpm-typo3:7.2
+      volumes:
+        # mount the current folder to the /var/www folder.
+        # The php and apache container need the docroot under
+        # /var/www/public so be sure that you have a `public`
+        # folder in this directory
+        - .:/var/www:cached
+#     environment:
+#         XDEBUG_CONFIG: "${XDEBUG_CONFIG:-remote_port=9001 remote_enable=1 remote_autostart=On}"
+#         PHP_IDE_CONFIG: "${PHP_IDE_CONFIG:-serverName=Default}"
+#         BLACKFIRE_LOG_LEVEL: 4
+#         BLACKFIRE_SOCKET: tcp://blackfire:8707
+#    blackfire:
+#        image: blackfire/blackfire
+#        environment:
+#         # Exposes your host BLACKFIRE_SERVER_ID and TOKEN environment variables.
+#         - BLACKFIRE_SERVER_ID
+#         - BLACKFIRE_SERVER_TOKEN
+#         # You can also use static values here:
+#         # BLACKFIRE_SERVER_ID: SERVER-ID
+#         # BLACKFIRE_SERVER_TOKEN: SERVER-TOKEN
+volumes:
+    mysql:
+        driver: local
