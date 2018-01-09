@@ -40,7 +40,7 @@ services:
         - .:/var/www:cached
       environment:
         TYPO3_CONTEXT: Development
-#         XDEBUG_CONFIG: "${XDEBUG_CONFIG:-remote_port=9001 remote_enable=1 remote_autostart=On}"
+#         XDEBUG_CONFIG: "${XDEBUG_CONFIG:-remote_port=9001 remote_enable=1 remote_host=docker.for.mac.host.internal remote_autostart=On}"
 #         PHP_IDE_CONFIG: "${PHP_IDE_CONFIG:-serverName=Default}"
 #         BLACKFIRE_LOG_LEVEL: 4
 #         BLACKFIRE_SOCKET: tcp://blackfire:8707
