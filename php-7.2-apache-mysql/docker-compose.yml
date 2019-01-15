@@ -37,10 +37,10 @@ services:
         # The php and apache container need the docroot under
         # /var/www/public so be sure that you have a `public`
         # folder in this directory
-        - .:/var/www:cached
+        - .:/var/www:delegated
       environment:
         TYPO3_CONTEXT: Development
-#         XDEBUG_CONFIG: "${XDEBUG_CONFIG:-remote_port=9001 remote_enable=1 remote_host=docker.for.mac.host.internal remote_autostart=On}"
+        XDEBUG_CONFIG: "${DOCKER_XDEBUG_CONFIG:-}"
 #         PHP_IDE_CONFIG: "${PHP_IDE_CONFIG:-serverName=Default}"
 #         BLACKFIRE_LOG_LEVEL: 4
 #         BLACKFIRE_SOCKET: tcp://blackfire:8707

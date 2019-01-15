@@ -22,3 +22,13 @@ should be able to browse `http://localhost:8080` and see
 a phpinfo.
 You should also be able to connect to the MySQL server on
 `localhost:13306`.
+
+### Enable Xdebug
+
+To enable xdebug you have to set the environment variable
+`DOCKER_XDEBUG_CONFIG`. Xdebug will be startet on port 9001.
+
+*Please note that the setup is very slow if Xdebug is enabled!*
+
+Example:
+`DOCKER_XDEBUG_CONFIG="remote_port=9001 remote_enable=1 remote_host=host.docker.internal remote_autostart=Off" docker-compose up -d --force-recreate`
