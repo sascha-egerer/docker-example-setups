@@ -1,4 +1,4 @@
-version: "2.2"
+version: "2.4"
 services:
     mysql:
       image: mariadb:10.1
@@ -38,6 +38,16 @@ services:
         # /var/www/public so be sure that you have a `public`
         # folder in this directory
         - .:/var/www:delegated
+        # Create a tmpfs volume for the typo3temp folder
+        # This will increase the speed dramatically
+        # Maybe the path must be adjusted if you do not
+        # use `helhum/typo3-secure-web`.
+        # Please also note that this will write the files
+        # into a RAM drive which could get very big and fill
+        # up your ram. You can also limit the device in size
+        # but than you'll have a different problem.
+        - type: tmpfs
+          target: /var/www/private/typo3temp
       environment:
         TYPO3_CONTEXT: Development
         XDEBUG_CONFIG: "${DOCKER_XDEBUG_CONFIG:-}"
