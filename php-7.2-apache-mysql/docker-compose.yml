@@ -46,8 +46,10 @@ services:
         # into a RAM drive which could get very big and fill
         # up your ram. You can also limit the device in size
         # but than you'll have a different problem.
-        - type: tmpfs
-          target: /var/www/private/typo3temp
+        # Note that you have to run the `composer install`
+        # in this container if you're using `helhum/typo3-secure-web`
+        # so folders get created correctly in the container.
+        - typo3temp:/var/www/private/typo3temp
       environment:
         TYPO3_CONTEXT: Development
         XDEBUG_CONFIG: "${DOCKER_XDEBUG_CONFIG:-}"
@@ -66,3 +68,7 @@ services:
 volumes:
     mysql:
         driver: local
+    typo3temp:
+        driver_opts:
+            type: tmpfs
+            device: tmpfs
